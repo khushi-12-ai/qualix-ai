@@ -1,0 +1,154 @@
+Qualix AI — Comprehensive Project Specification
+
+1. Expected Outcome & Proposed Solution
+Qualix AI is designed to act as an automated "AI Data Doctor" for Micro, Small, and Medium Enterprises (MSMEs). 
+
+It is a full-stack, secure dashboard platform that ingests raw, often messy business data (from CSVs, Excel files, or direct CRM/Tally exports) and performs a deep diagnostic audit. Instead of requiring a data scientist to manually clean the data, Qualix AI automatically scores the dataset on key metrics like completeness, consistency, duplication, and structural integrity.
+
+The Expected Outcomes
+1. Quantifiable AI/ML Readiness: The platform outputs a definitive "AI Readiness Score" (0-100).
+2. Actionable Remediation (The Fix List): Generates a plain-language, actionable "Fix List" tailored for technical teams and business executives.
+3. Unified Data View: "Smart Data Merge" seamlessly ingests and merges fragmented datasets.
+4. Guaranteed Security: Raw files are scanned for malware (via ClamAV) and encrypted at rest (AES-256) before processing.
+5. Proactive Health Monitoring: Provides live monitoring and continuous notifications for data health drifts.
+6. Executive Business Translation: Technical data errors are translated into localized executive business risks.
+7. Compliance Generation: Generates a tamper-proof PDF Compliance Certificate.
+
+--------------------------------------------------
+
+2. Workflow Diagram & Detailed Explanation
+
+Workflow (High-Level)
+User/System Integrations -> Real-Time Data Ingestion & Sync -> ClamAV Security Scan -> (If Clean) -> AES-256 Encryption at Rest -> Smart Data Merge & Reconciliation -> Data Profiling Engine & Live Monitoring -> Quality Audit & Hygiene Scoring -> ML Readiness Evaluation -> Executive Business Impact Translation -> AI Data Doctor & Fix Center -> Remediation & Export / Certification.
+
+Phase 1: Ingestion & Security
+1. Secure Login & RBAC: Users authenticate as Admin, Data Analyst, or Viewer. 
+2. Dashboard Overview: A high-level telemetry view showing live vitals.
+3. System Integrations: Data enters via manual uploads or real-time integration connectors.
+4. Zero-Trust Security Gate: All incoming data is intercepted by a ClamAV firewall. Clean files are encrypted via AES-256.
+
+Phase 2: Processing & Profiling
+5. Smart Data Merge: Intelligently joins and reconciles fragmented datasets.
+6. Intelligent Scan Scope: Analysts can toggle specific columns to include/exclude.
+7. Data Analyzer & Profile: Calculates row counts, memory footprints, and statistical distributions.
+
+Phase 3: The AI & Quality Audit
+8. Data Quality Audit (Hygiene): Core diagnostic engine flags structural issues and near-duplicates.
+9. AI Readiness Engine: Evaluates dataset for ML viability (e.g., target leakage, class imbalances).
+10. AI/ML Intelligence: Dynamic charts showing feature distributions and anomaly plots.
+
+Phase 4: Translation & Remediation
+11. Business Impact Ledger: Translates technical errors into executive-level impacts in multiple local languages.
+12. Fix Center: Actionable tools to clean the data (drop columns, impute values).
+13. AI Data Doctor: An interactive chat interface to query diagnostic results.
+
+Phase 5: Monitoring & Export
+14. Scheduled Monitoring: Automated live monitoring tasks for data drift.
+15. Reporting: Generates a tamper-proof PDF Compliance Certificate.
+
+--------------------------------------------------
+
+3. Algorithm Flow & Pseudocode (Aligned Scoring Engine)
+
+Algorithm Flow
+1. Phase 1: Ingestion & Profiling (Infer data types, generate statistical profile).
+2. Phase 2: Base Dimension Scoring (Score Completeness, Consistency, Duplication, Structure, Anomaly on 0-100 scale).
+3. Phase 3: Base Score Calculation (Weighted average of the 5 dimensions).
+4. Phase 4: ML Readiness Assessment (Apply penalties for Target Leakage and Class Imbalance).
+5. Phase 5: Diagnostics & Reporting (Compile specific issues and actionable fixes).
+
+Detailed Pseudocode
+FUNCTION evaluate_dataset(dataset, target_column_name):
+    # 1. Profile dataset & infer types
+    profile = { "total_rows": count_rows(dataset), "total_columns": count_columns(dataset), "columns_meta": [] }
+    FOR EACH column IN dataset:
+        profile["columns_meta"].append({ "name": column.name, "type": infer_data_type(column), "nulls": count_empty_cells(column), "data": column.values })
+
+    # 2. Calculate 5 dimension scores
+    total_cells = profile.total_rows * profile.total_columns
+    total_empty = SUM(col.nulls FOR col IN profile.columns_meta)
+    completeness_score = ((total_cells - total_empty) / total_cells) * 100
+    
+    consistency_score = calculate_consistency(profile) # mixed casing penalties
+    duplication_score = (count_unique_rows(dataset) / profile.total_rows) * 100
+    structure_score = calculate_structure_adherence(profile) # type mismatch penalties
+    anomaly_score = calculate_iqr_outliers(profile)
+    
+    # 3. Overall Base Score
+    weights = {"completeness": 0.25, "consistency": 0.25, "duplication": 0.20, "structure": 0.15, "anomaly": 0.15}
+    base_score = (completeness_score * weights["completeness"]) + ... + (anomaly_score * weights["anomaly"])
+
+    # 4. Advanced ML diagnostics & penalties
+    ml_readiness = base_score * 0.8
+    IF check_target_leakage(dataset, target_column_name): ml_readiness -= 25
+    IF check_class_imbalance(dataset, target_column_name): ml_readiness -= 15
+    ml_readiness = MAX(10, MIN(100, ml_readiness))
+
+    # 5. Detect and compile fixes
+    issues, fixes = compile_issues_and_fixes(completeness_score, leakage, imbalance)
+
+    RETURN Scorecard(base_score, ml_readiness, dimensions, issues, fixes)
+
+--------------------------------------------------
+
+4. Technology Stack
+
+1. Application Layer
+* Frontend: React or Next.js, D3.js/Apache ECharts, TailwindCSS.
+* Backend: Python (FastAPI).
+
+2. Data Analytics & Engineering
+* Ingestion: Apache Kafka.
+* Storage: PostgreSQL (Relational), Elasticsearch (Logs), Snowflake (Warehouse).
+* Processing: Apache Spark (for scaling beyond Pandas).
+
+3. AI / Machine Learning
+* Frameworks: PyTorch, Scikit-Learn.
+* MLOps & Serving: MLflow, NVIDIA Triton.
+
+4. Cybersecurity
+* IAM & App Security: Keycloak, Cloudflare WAF, HashiCorp Vault.
+* Malware & Monitoring: ClamAV (pre-ingestion), ELK Stack.
+
+--------------------------------------------------
+
+5. Assumptions
+
+Data & Processing
+* Tabular Focus: Users primarily ingest flat formats (CSV, Excel).
+* In-Memory Scale: Datasets are sized appropriately (< 1GB) for in-memory processing (Pandas) for the MVP.
+
+User Persona
+* Non-Technical End Users: Consumers are business executives requiring "Executive Business Impact Translation".
+
+System Capabilities
+* Static Translation Dictionary: Local language translation relies on a static domain dictionary.
+* Secure Host Environment: The server can safely execute ClamAV scans before AES-256 encryption.
+
+--------------------------------------------------
+
+6. Challenges
+
+Technical Challenges
+* Performance vs Accuracy: Fuzzy matching (RapidFuzz) on large datasets is computationally expensive.
+* Handling Complex Relational Data: Automated joining and relational integrity checks are complex.
+* Real-Time Integration & Monitoring: Running seamless integrations and scheduled cron jobs without overwhelming the backend.
+
+Business Challenges
+* Subjectivity of 'Readiness': Defining a universal "AI Readiness Score" across diverse industries.
+* Multi-Language Support: Translating technical errors accurately across 11 regional languages.
+* Alert Fatigue: Providing value without overwhelming users with minor data drift alerts.
+
+Security Challenges
+* Zero-Trust Ingestion: Safely sandboxing MSME files prone to malware.
+* Data Privacy & Encryption: Strict AES-256 encryption while maintaining fast in-memory profiling.
+
+--------------------------------------------------
+
+7. Future Enhancements
+
+* Direct Database Connectors: Direct connections to MySQL, PostgreSQL, AWS S3.
+* Generative AI & LLM Integration: Replacing static dictionaries with a local LLM (e.g., Llama 3) for dynamic impact reports.
+* Distributed Processing (Big Data Scale): Migrating from Pandas to PySpark/Dask to prevent OOM errors on massive datasets.
+* Automated Data Remediation Pipelines: Fully automated ETL pipelines that clean data in real-time.
+* Advanced Threat Detection: AI models trained on cyber threat intelligence to detect data poisoning.
