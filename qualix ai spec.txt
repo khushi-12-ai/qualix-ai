@@ -1,0 +1,32 @@
+Based on the workflow diagram you provided in the presentation and the list of application pages, here is how each page of the Qualix AI platform maps to the 8-step journey on your slide, along with an explanation of what it does and how it works.
+
+### 1. Ingestion & Pre-processing (Maps to **`01 UPLOAD`**)
+This phase is all about getting the raw data into the system securely.
+*   **System Integrations:** This is the entry point. As stated in the PPT ("Real-time data integration"), this module connects to external data sources (like CRMs, Tally, or ERPs) via APIs, or allows manual CSV/Excel file uploads. It also runs the initial security scan (ClamAV) and encrypts the data.
+*   **Smart Data Merge:** If a business uploads multiple fragmented files (e.g., separate Sales and Inventory CSVs), this tool intelligently joins them into a single, unified dataset before the audit begins. 
+*   **Intelligent Scan Scope:** This relates directly to the **"Toggle Column Selection"** mentioned under **`02 PROFILE`** in the PPT. It allows the analyst to exclude irrelevant columns (like internal database IDs) from the scan so they don't unfairly skew the final score.
+
+### 2. Reconcile & Audit (Maps to **`03 CHECKS`**)
+This phase sets the ground rules before scoring begins.
+*   **Reconciliation Center:** Ensures that data merged from different sources structurally aligns and makes logical sense together.
+*   **Schema & Rules:** This drives the **"Rule-based quality checks"** mentioned in the PPT. It defines what "good" data looks like (e.g., "Age must be a number", "Email must have an @ symbol") so the diagnostic engine knows what to flag as an error.
+
+### 3. Diagnose & Score (Maps to **`02 PROFILE`**, **`04 SCORE`**, and **`05 DIAGNOSE`**)
+This is the analytical core of the platform where the data is evaluated.
+*   **Dashboard:** A high-level control center showing live vitals. It aggregates the final **`04 SCORE`** so executives can see the overall health at a glance.
+*   **Data Analyzer & Data Profile:** Maps perfectly to **`02 PROFILE`**. It provides a "Statistical overview of data," generating charts for distributions, counting missing values, and showing memory footprints.
+*   **Data Quality & AI Readiness:** This is the execution of **`04 SCORE`**. It computes the "Overall Data Quality Score + dimension-specific metrics". It evaluates completeness and consistency, and specifically checks if the data is structurally ready for Machine Learning (e.g., checking for target leakage or class imbalance).
+*   **AI/ML Intelligence & Data Lineage:** Maps to **`05 DIAGNOSE`**. It performs "Root-cause analysis" to show *why* the score is low, using correlation matrices and tracking the data's history (lineage) to find where the errors originated.
+
+### 4. Remediate & Solve (Maps to **`06 FIX LIST`** and **`05 DIAGNOSE`**)
+Once the problems are identified, this phase is about fixing them.
+*   **Fix Center:** Maps exactly to **`06 FIX LIST`**. It provides the "Actionable recommendations for data cleaning and correction." This is a toolkit where users can actually execute fixes, such as imputing missing values, dropping bad columns, or standardizing text cases.
+*   **AI Data Doctor:** Explicitly mentioned in the PPT under **`05 DIAGNOSE`**. This is a chat interface where users can ask questions in plain English (e.g., "Why did my dataset fail the AI readiness check?") and get automated explanations.
+
+### 5. Report & Certify (Maps to **`08 EXPORT`**)
+The final deliverable phase for stakeholders.
+*   **Business Impact:** Before exporting, this module translates technical errors (like "high cardinality") into business risks (like "Revenue projections may be skewed"). 
+*   **Reports & Certificate:** Maps directly to **`08 EXPORT`**. It allows the user to "Download processed dataset, scorecard & AI/BI-ready report." It generates a tamper-proof PDF Compliance Certificate summarizing the data health, encrypted hashes, and final scores for management.
+
+### 6. System Control & Alerts (Maps to **`02 PROFILE`**)
+*   **Scheduled Monitoring:** Maps to the **"Live Monitoring"** feature mentioned under **`02 PROFILE`**. It allows users to set up automated background tasks that constantly watch data streams and send alerts if the data quality drops below a certain threshold over time.
