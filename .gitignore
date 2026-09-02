@@ -1,0 +1,29 @@
+# Qualix AI build and session artifacts to exclude from git tracking
+
+# Environment variables & secrets
+.env
+.key
+
+# All encrypted dataset files
+*.enc
+encrypted_*/
+
+
+# Virtual environment files
+.venv/
+ENV/
+
+# Python cache & compiled binaries
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Log ledgers
+audit.log
+
+# IDE files
+.vscode/
+.idea/
+.agents/
+.gemini/
